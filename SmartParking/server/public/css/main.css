@@ -1,0 +1,299 @@
+/* ================================================================= */
+/* VARIABLES */
+:root {
+  --text-color-dark: #24292e;
+  --text-color-light: #333c48;
+  --border-color: #e2e4e8;
+  --icon-color: #cfd2d6;
+  --primary-color: #0166d6;
+  --success-color: #0faf51;
+  --alert-color: #ef9400;
+  --danger-color: #df5138;
+  --danger-bg-color: rgba(223, 81, 56, 0.18);
+}
+/* ================================================================= */
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: box;
+  text-rendering: optimizeLegibility;
+  outline: none;
+  border: none;
+  font-family: acumin-pro, Arial, Helvetica, sans-serif;
+  /* font-family: Arial, Helvetica, sans-serif; */
+  color: var(--text-color-light);
+}
+
+html {
+  font-size: 14px;
+}
+
+body {
+  color: var(--text-color-light);
+  background-color: rgb(247, 247, 247);
+  font-weight: 400;
+  font-style: normal;
+}
+
+input,
+button {
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: 0.3rem;
+}
+
+a {
+  text-decoration: none;
+  color: var(--primary-color);
+  font-weight: 400;
+}
+/* ================================================================= */
+/* ALERT STYLE */
+.alert {
+  padding: 1rem 1rem 1rem calc(2rem + 30px);
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 1rem 0;
+}
+
+.alert-danger {
+  background-color: var(--danger-bg-color);
+  background-image: url("/img/icons/error.svg");
+  background-position-x: 1rem;
+  background-position-y: center;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-size: auto;
+  background-origin: padding-box;
+  background-clip: border-box;
+  border-radius: 0.3rem;
+  color: var(--danger-color);
+}
+
+/* ================================================================= */
+/* LOGIN PAGE STYLE */
+.login-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-box {
+  border-radius: 0.3rem;
+  padding: 1rem 1.5rem;
+  background-color: #fff;
+  width: 350px;
+  box-shadow: 0px 4px 6px -3px rgba(0, 0, 0, 0.23);
+}
+
+.login-header {
+  padding: 0.75rem 0;
+  font-size: 2rem;
+  color: var(--text-color-dark);
+  /* border-bottom: 2px solid var(--border-color); */
+  font-weight: 700;
+  font-style: normal;
+  text-align: center;
+}
+
+.login-box form {
+  padding: 1rem 0;
+}
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+}
+.input-field:not(:last-child) {
+  margin-bottom: 1.25rem;
+}
+
+.input-field .input-text {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+}
+
+.input-field .input-text a {
+  font-size: 1rem;
+}
+
+.input-field input,
+.input-field .input-text {
+  font-size: 1.128rem;
+}
+
+.input-field .btn {
+  border: none;
+  color: #fff;
+  font-weight: 400;
+  font-size: 1.3rem;
+  background-color: var(--primary-color);
+  cursor: pointer;
+  transition: all 0.1s ease-in;
+}
+
+.input-field input {
+  padding-left: calc(5px + 28px + 5px);
+}
+
+.input-field input[type="text"] {
+  background: url("/img/icons/user.svg") no-repeat scroll 5px;
+}
+
+.input-field input[type="password"] {
+  background: url("/img/icons/lock.svg") no-repeat scroll 5px;
+}
+
+.input-field input:focus {
+  border-color: var(--primary-color);
+}
+
+/* ================================================================= */
+/* DASHBOARD */
+.grid {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  grid-template-rows: 50px 1fr 50px;
+  grid-template-areas:
+    "header header"
+    "sidenav main"
+    "sidenav footer";
+  height: 100vh;
+  width: 100%;
+}
+
+.header {
+  /* z-index: 999; */
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  grid-area: header;
+  background-color: #072240;
+  /* border-bottom: 1px solid rgba(255, 255, 255, 0.1); */
+}
+
+/* account box */
+.account-box {
+  z-index: 999;
+  position: absolute;
+  right: 0;
+  top: 50px;
+  background-color: white;
+  box-shadow: 0px 4px 6px -3px rgba(0, 0, 0, 0.23);
+  animation: slideDown 0.5s linear;
+}
+
+@keyframes slideDown {
+  0% {
+    top: -800px;
+  }
+  100% {
+    top: 50px;
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    top: 50px;
+  }
+  100% {
+    top: -800px;
+  }
+}
+
+.header .logo {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+}
+.logo small {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 400;
+}
+
+.header-item {
+  text-decoration: none;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  color: white;
+  font-weight: 700;
+  text-transform: capitalize;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.header-item svg {
+  width: 12px;
+  height: auto;
+  fill: white;
+}
+
+.sidenav {
+  /* height: 100vh; */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  grid-area: sidenav;
+  background-color: #142f4e;
+  /* box-shadow: 4px 0px 7px rgba(0, 0, 0, 0.3); */
+}
+
+.sidenav-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none !important;
+  text-align: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidenav-item:last-child {
+  margin-top: auto;
+  border-bottom: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidenav-item.active {
+  font-weight: 700;
+  background-color: #061c35;
+  color: white;
+  border-left: 4px solid var(--primary-color);
+}
+
+.sidenav-item.active svg {
+  fill: white;
+}
+.sidenav-item:hover {
+  color: white;
+}
+
+.sidenav-item:hover svg {
+  fill: white;
+}
+
+.sidenav-item svg {
+  fill: rgba(255, 255, 255, 0.5);
+  margin-bottom: 0.5rem;
+}
+
+.main {
+  grid-area: main;
+}
+
+.footer {
+  grid-area: footer;
+}
+
+/* ================================================================= */
