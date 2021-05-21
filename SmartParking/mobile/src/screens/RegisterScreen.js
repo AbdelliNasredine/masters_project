@@ -10,10 +10,11 @@ import {
 
 import Feather from 'react-native-vector-icons/Feather';
 
+import {register} from '../services/AuthServices';
+
 export default function ({navigation}) {
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
 
   const onUsernameChange = val => {
     setUserName(val);
@@ -23,8 +24,15 @@ export default function ({navigation}) {
     setPassword(val);
   };
 
-  const onPhoneNumberChange = val => {
-    setPhoneNumber(val);
+  const onRegisterPressed = async () => {
+    const data = await register(username, password);
+    if (data.status === 400) {
+      Alert.alert('Error', data.msg, [{text: 'OK'}]);
+      return;
+    } else {
+      Alert.alert('Success', 'Your account has been created', [{text: 'OK'}]);
+      navigation.navigate('Login');
+    }
   };
 
   return (
@@ -34,14 +42,14 @@ export default function ({navigation}) {
       </View>
       <View style={styles.footer}>
         <View style={styles.field}>
-          <Text styles={styles.text_footer}>Phone number</Text>
+          <Text styles={styles.text_footer}>Username</Text>
           <View style={styles.action}>
-            <Feather name="phone" color="#E2E4E8" size={20} />
+            <Feather name="user" color="#E2E4E8" size={20} />
             <TextInput
-              keyboardType="number-pad"
-              placeholder="Your Phone Number"
+              defaultValue={username}
+              placeholder="Your username"
               style={styles.textInput}
-              onChange={val => onPhoneNumberChange(val)}
+              onChangeText={val => onUsernameChange(val)}
             />
           </View>
         </View>
@@ -50,15 +58,16 @@ export default function ({navigation}) {
           <View style={styles.action}>
             <Feather name="lock" color="#E2E4E8" size={20} />
             <TextInput
+              defaultValue={password}
               placeholder="Your Password"
               secureTextEntry={true}
               style={styles.textInput}
-              onChange={val => onPasswordChange(val)}
+              onChangeText={val => onPasswordChange(val)}
             />
           </View>
         </View>
         <View style={styles.field}>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={onRegisterPressed}>
             <Text style={styles.textSign}>Register</Text>
           </TouchableOpacity>
           <TouchableOpacity

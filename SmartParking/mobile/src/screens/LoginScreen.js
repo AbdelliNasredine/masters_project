@@ -4,30 +4,41 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  Platform,
   StyleSheet,
-  StatusBar,
   Alert,
 } from 'react-native';
 
 import Feather from 'react-native-vector-icons/Feather';
-
+import {authenticate} from '../services/AuthServices';
 import {AuthContext} from '../components/context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ({navigation}) {
-  const [phoneNumber, setphoneNumber] = useState('');
+  const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
-  const {login} = useContext(AuthContext);
+  const {loginState, dispatch} = useContext(AuthContext);
 
   const onPhoneNumberChange = val => {
-    setphoneNumber(val);
+    setUserName(val);
   };
 
   const onPasswordChange = val => {
     setPassword(val);
   };
 
+  const onLoginPresses = async () => {
+    const data = await authenticate(username, password);
+    if (data.status === 400) {
+      Alert.alert('Wrong Credentials', data.msg, [{text: 'OK'}]);
+      return;
+    }
+    const userToken = data.accessToken;
+    await AsyncStorage.setItem('userToken', userToken);
+    dispatch({type: 'LOGIN', token: userToken, username});
+  };
+
+  console.log('login error', loginState.loginError);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -35,13 +46,12 @@ export default function ({navigation}) {
       </View>
       <View style={styles.footer}>
         <View style={styles.field}>
-          <Text styles={styles.text_footer}>Phone number</Text>
+          <Text styles={styles.text_footer}>Username</Text>
           <View style={styles.action}>
             <Feather name="phone" color="#E2E4E8" size={20} />
             <TextInput
-              defaultValue={phoneNumber}
-              keyboardType="numeric"
-              placeholder="Your phone number"
+              defaultValue={username}
+              placeholder="Your Username"
               style={styles.textInput}
               onChangeText={val => onPhoneNumberChange(val)}
             />
@@ -55,12 +65,12 @@ export default function ({navigation}) {
               placeholder="Your Password"
               secureTextEntry={true}
               style={styles.textInput}
-              onChange={val => onPasswordChange(val)}
+              onChangeText={val => onPasswordChange(val)}
             />
           </View>
         </View>
         <View style={styles.field}>
-          <TouchableOpacity style={styles.button} onPress={() => login()}>
+          <TouchableOpacity style={styles.button} onPress={onLoginPresses}>
             <Text style={styles.textSign}>Login</Text>
           </TouchableOpacity>
           <TouchableOpacity
