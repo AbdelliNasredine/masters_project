@@ -8,6 +8,7 @@ import {
   Alert,
 } from 'react-native';
 
+import Button from '../components/Button';
 import Feather from 'react-native-vector-icons/Feather';
 
 import {register} from '../services/AuthServices';
@@ -67,14 +68,18 @@ export default function ({navigation}) {
           </View>
         </View>
         <View style={styles.field}>
-          <TouchableOpacity style={styles.button} onPress={onRegisterPressed}>
+          <Button onPress={onRegisterPressed}>Register</Button>
+          <Button alt onPress={() => navigation.navigate('Login')}>
+            Login
+          </Button>
+          {/* <TouchableOpacity style={styles.button} onPress={onRegisterPressed}>
             <Text style={styles.textSign}>Register</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
+          </TouchableOpacity> */}
+          {/* <TouchableOpacity
             style={[styles.button, styles.buttonRegister]}
             onPress={() => navigation.navigate('Login')}>
             <Text style={styles.textRegister}>Login</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     </View>

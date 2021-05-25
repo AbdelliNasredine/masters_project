@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
-
+import Button from '../components/Button';
 import Feather from 'react-native-vector-icons/Feather';
 import {authenticate} from '../services/AuthServices';
 import {AuthContext} from '../components/context';
@@ -17,7 +17,7 @@ export default function ({navigation}) {
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
-  const {loginState, dispatch} = useContext(AuthContext);
+  const {dispatch} = useContext(AuthContext);
 
   const onPhoneNumberChange = val => {
     setUserName(val);
@@ -38,7 +38,6 @@ export default function ({navigation}) {
     dispatch({type: 'LOGIN', token: userToken, username});
   };
 
-  console.log('login error', loginState.loginError);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -70,14 +69,10 @@ export default function ({navigation}) {
           </View>
         </View>
         <View style={styles.field}>
-          <TouchableOpacity style={styles.button} onPress={onLoginPresses}>
-            <Text style={styles.textSign}>Login</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.button, styles.buttonRegister]}
-            onPress={() => navigation.navigate('Register')}>
-            <Text style={styles.textRegister}>Register</Text>
-          </TouchableOpacity>
+          <Button onPress={onLoginPresses}>Login</Button>
+          <Button alt onPress={() => navigation.navigate('Register')}>
+            Register
+          </Button>
         </View>
       </View>
     </View>

@@ -7,8 +7,8 @@ router.post("/api/register", authController.register);
 router.post("/api/login", authController.jwtLogin);
 
 // WEB AUTH
-router.get("/login", authController.sessionLoginGet);
-router.post("/login", authController.sessionLoginPost);
-router.get("/logout", authController.sessionLogout);
+router.get("/admin/login", authController.sessionLoginGet);
+router.post("/admin/login", authController.sessionLoginPost);
+router.get("/admin/logout", authController.sessionLogout);
 
 module.exports = router;

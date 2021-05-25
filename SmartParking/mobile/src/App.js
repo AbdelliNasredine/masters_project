@@ -1,29 +1,21 @@
-import React, {useState, useMemo, useEffect} from 'react';
-import {View, ActivityIndicator, Text, StyleSheet, Alert} from 'react-native';
+import React, {useMemo, useEffect} from 'react';
+import {View, ActivityIndicator, StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {AuthContext} from './components/context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {initialLoginState, loginReducer} from './reducers/loginReducer';
-import {authenticate} from './services/AuthServices';
 
 import RootStackScreen from './screens/RootStackScreen';
 import MainNavigationScreen from './screens/MainNavigationScreen';
 
 function App() {
-  // const [isLoading, setIsLoading] = useState(true);
-  // const [userToken, setUserToken] = useState(null);
-
   const [loginState, dispatch] = React.useReducer(
     loginReducer,
     initialLoginState,
   );
-
-  // services
   const authContext = useMemo(
     () => ({
-      login: async (phoneNumber, password) => {
-        // stub
-      },
+      login: async (phoneNumber, password) => {},
       logout: async () => {
         try {
           await AsyncStorage.removeItem('userToken');
@@ -32,10 +24,7 @@ function App() {
         }
         dispatch({type: 'LOGOUT'});
       },
-      register: () => {
-        // setUserToken('nasro');
-        // setIsLoading(false);
-      },
+      register: () => {},
     }),
     [],
   );

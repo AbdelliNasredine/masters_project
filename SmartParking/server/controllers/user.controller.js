@@ -5,4 +5,16 @@ async function getAllUsers(req, res) {
   res.json(users);
 }
 
-module.exports = { getAllUsers };
+async function updateUserInformation(req, res) {
+  console.log(req.body);
+  const { id } = req.auth;
+  res.json({});
+}
+
+async function getAuthUserInformation(req, res) {
+  const { id } = req.auth;
+  const user = await User.findByPk(id);
+  res.json(user);
+}
+
+module.exports = { getAllUsers, updateUserInformation, getAuthUserInformation };

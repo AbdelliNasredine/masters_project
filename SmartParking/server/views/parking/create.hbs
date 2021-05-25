@@ -1,0 +1,43 @@
+<div class="grid">
+  {{> header}}
+  {{> navigation }}
+  <main class="main">
+    <div class="body">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Create New Parking Place</h4>
+        </div>
+        <div class="card-body">
+          <form action="/admin/parks/create" method="POST" class="form">
+            <label>
+              Name
+              <input type="text" name="name" required>
+            </label>
+            <label>
+              Description
+              <textarea name="description" cols="30" rows="5"></textarea>
+            </label>
+            <label>
+              Address
+              <input type="text" name="address" required>
+            </label>
+            <label>
+              <p>Rent Price <small>(DA per hour)</small> </p> 
+              <input type="number" name="price" required>
+            </label>
+            <label>
+              latitude 
+              <input type="number" name="latitude" step="0.01" required>
+            </label>
+            <label>
+              Longitude
+              <input type="number" name="longitude" step="0.01" required>
+            </label>
+
+            <button type="submit" class="btn btn-primary">Create</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

@@ -23,7 +23,7 @@ async function register(req, res) {
   // save new user in database
   const user = await User.create({
     username,
-    password: passwordHash,
+    password,
     role: "driver",
   });
 
@@ -68,14 +68,14 @@ async function sessionLoginPost(req, res) {
     res.render("login", { error: "Wrong Credentials" });
   } else {
     req.session.user = user.id;
-    res.redirect("/dashboard");
+    res.redirect("/admin/dashboard");
   }
 }
 
 // SESSION logout function
 function sessionLogout(req, res) {
   req.session.destroy();
-  res.redirect("/");
+  res.redirect("/admin/");
 }
 
 module.exports = {

@@ -1,0 +1,51 @@
+<div class="grid">
+  {{> header}}
+  {{> navigation }}
+  <main class="main">
+    <div class="header">
+      <h2 class="header-title">Manage Parks</h2>
+      <div class="header-actions">
+        <a href="/admin/parks/create" class="btn btn-primary">create new park</a>
+      </div>
+    </div>
+    <div class="body">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">parking list</h4>
+        </div>
+        <div class="card-body">
+          <table>
+            <thead>
+              <tr>
+                <th>name</th>
+                <th>address</th>
+                <th>latitude</th>
+                <th>longitude</th>
+                <th>rentPrice</th>
+                <th>actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each parks}}
+                <tr>
+                  {{#dataValues}}
+                      <td>{{name}}</td>
+                      <td>{{address}}</td>
+                      <td>{{lat}}</td>
+                      <td>{{lat}}</td>
+                      <td>{{lon}}</td>
+                      <td>
+                        <div class="actions">
+                          <a href="/admin/parks/{{id}}/view">view</a>
+                        </div>
+                      </td>
+                  {{/dataValues}}
+                </tr>
+              {{/each }}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

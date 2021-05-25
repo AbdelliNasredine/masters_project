@@ -3,12 +3,12 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
   Dimensions,
   TouchableOpacity,
   Image,
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Button from '../components/Button';
 
 export default function RegisterScreen({navigation}) {
   return (
@@ -19,14 +19,9 @@ export default function RegisterScreen({navigation}) {
       <View style={styles.footer}>
         <Text style={styles.title}>Welcome to fog smart parking app</Text>
         <Text style={styles.text}>Sign in with your account</Text>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('Login')}>
-          <View style={styles.signIn}>
-            <Text style={styles.textSign}>Getting started</Text>
-            <MaterialIcons name="navigate-next" color="#fff" size={20} />
-          </View>
-        </TouchableOpacity>
+        <Button onPress={() => navigation.navigate('Login')}>
+          Getting Started
+        </Button>
       </View>
     </View>
   );
@@ -65,22 +60,6 @@ const styles = StyleSheet.create({
   text: {
     color: '#BEC1C7',
     marginTop: 5,
-  },
-  button: {
-    // alignItems: 'flex-end',
-    marginTop: 30,
-  },
-  signIn: {
-    width: '100%',
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-    flexDirection: 'row',
-    backgroundColor: '#1A6CC7',
-  },
-  textSign: {
-    color: 'white',
-    fontWeight: 'bold',
+    marginBottom: 10,
   },
 });

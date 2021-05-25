@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://192.168.1.3:8080/api';
+import {API_BASE_URL} from '../constants';
 
 export async function authenticate(username, password) {
   const response = await fetch(`${API_BASE_URL}/login`, {

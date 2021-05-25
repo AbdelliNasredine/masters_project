@@ -33,8 +33,9 @@ app.use(middleware.clearCookie);
 
 // ROUTES
 app.use(authRoutes);
-app.use(webRoutes);
-app.use(apiRoutes);
+app.use("/api", apiRoutes);
+app.use("/admin", webRoutes);
+app.get("/", (req, res) => res.redirect("/admin"));
 
 app.listen(port, () => {
   testConnection();

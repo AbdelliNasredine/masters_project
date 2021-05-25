@@ -1,0 +1,104 @@
+<div class="grid">
+  {{> header}}
+  {{> navigation }}
+  <main class="main">
+    <div class="header">
+      <div>
+        <h3 class="header-title">{{parking.name}}</h3>
+        <p>{{parking.description}}</p>
+      </div>
+      {{!-- <div class="header-actions">
+        <a href="/admin/parks/create" class="btn btn-primary">create new park</a>
+      </div> --}}
+    </div>
+    <div class="body">
+      <div class="parking-grid">
+        <div class="left">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title">Details</h5>
+            </div>
+            <div class="card-body">
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title">Authorized Vehicles</h5>
+              <div class="actions">
+                <button data-micromodal-trigger="modal-1">add</button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="v-list">
+                {{#each parking.authorizedVehicles}}
+                  <div class="v-item">
+                    <p>licence plate</p>
+                    <span> {{this}} </span>
+                  </div>
+                {{/each}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="right">
+          <div class="card" style="height: 100%;">
+            <div class="card-header">
+              <h5 class="card-title">Parking Spots</h5>
+            </div>
+            <div class="card-body">
+              {{#if parking.parkingSpots}}
+                <div class="spots-header">
+                <h5>View Spot Status</h5>
+                <div class="spots-status">
+                  Free <div class="indicator green"></div>
+                  Occupied <div class="indicator red"></div>
+                </div>
+              </div>
+              <div class="spots">
+                <div class="spot">#001</div>
+                <div class="spot green">#002</div>
+                <div class="spot">#003</div>
+                <div class="spot green">#003</div>
+                <div class="spot">#003</div>
+                <div class="spot red">#003</div>
+                <div class="spot">#003</div>
+                <div class="spot">#003</div>
+                <div class="spot red">#003</div>
+                <div class="spot green">#003</div>
+              </div>
+              {{else}}
+                <div class="no-spots">
+                  No Parking Spot found, please configure the parking
+                </div>
+              {{/if}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<div class="modal micromodal-slide" id="modal-1" aria-hidden="true">
+  <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+    <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+      <header class="modal__header">
+        <h2 class="modal__title" id="modal-1-title">
+          Authorize a vehicle
+        </h2>
+        <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+      </header>
+      <main class="modal__content" id="modal-1-content">
+        <form action="/admin/parks/{{parking.id}}/add_vehicle" method="POST" class="form">
+          <label>
+            Licence plate
+            <input type="text" name="licencePlate" required>
+          </label>
+          <label>
+            <button class="btn btn-primary" type="submit">add</button>
+          </label>
+        </form>
+      </main>
+    </div>
+  </div>
+</div>
+        

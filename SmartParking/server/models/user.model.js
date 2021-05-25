@@ -30,6 +30,10 @@ User.init(
       type: DataTypes.STRING(45),
       allowNull: false,
     },
+    userInfo: {
+      type: DataTypes.JSON,
+      allowNull: true,
+    },
     isVerified: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
