@@ -3,6 +3,8 @@ const middleware = require("../middleware/sessionauth.middleware");
 const User = require("../models/user.model");
 const adminController = require("../controllers/admin.controller");
 const parkingController = require("../controllers/parking.controller");
+const userController = require("../controllers/user.controller");
+const reservationController = require("../controllers/reservations.controller");
 const router = express.Router();
 
 // middleware
@@ -27,7 +29,6 @@ router.use((req, res, next) => {
 router.get("/dashboard", adminController.dashboardPage);
 router.get("/parks", adminController.parksPage);
 router.get("/users", adminController.usersPage);
-router.get("/payments", adminController.paymentsPage);
 router.get("/profile", adminController.profilePage);
 router.get("/", adminController.index);
 
@@ -43,7 +44,19 @@ router.post(
   "/parks/:id/add_vehicle",
   parkingController.addVehicleToAuthorizedList
 );
+router.post("/parks/:id/configure", parkingController.configureSpots);
 router.post("/parks/:id/update", parkingController.postUpdate);
 router.post("/parks/:id/remove", parkingController.postRemove);
+
+// User Management
+router.get("/users/new", userController.getCreatUser);
+router.post("/users/new", userController.postCreatUser);
+router.get("/users/:id/view", userController.getUserPage);
+router.post("/users/:id/update", userController.updateUser);
+router.get("/users/:id/remove", userController.removeUser);
+
+// Reservation Management
+router.get("/reservations", reservationController.all);
+router.get("/reservations/:id/view", reservationController.view);
 
 module.exports = router;

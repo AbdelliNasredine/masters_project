@@ -1,21 +1,20 @@
 import React, {useState, useContext} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  StyleSheet,
-  Alert,
-} from 'react-native';
-import Button from '../components/Button';
+import {View, Text, TextInput, StyleSheet, Alert} from 'react-native';
+
+import {ActivityIndicator, Colors, Button} from 'react-native-paper';
+
+// import Button from '../components/Button';
 import Feather from 'react-native-vector-icons/Feather';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import {authenticate} from '../services/AuthServices';
 import {AuthContext} from '../components/context';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ({navigation}) {
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const {dispatch} = useContext(AuthContext);
 
@@ -28,7 +27,9 @@ export default function ({navigation}) {
   };
 
   const onLoginPresses = async () => {
+    setIsLoading(true);
     const data = await authenticate(username, password);
+    setIsLoading(false);
     if (data.status === 400) {
       Alert.alert('Wrong Credentials', data.msg, [{text: 'OK'}]);
       return;
@@ -47,7 +48,7 @@ export default function ({navigation}) {
         <View style={styles.field}>
           <Text styles={styles.text_footer}>Username</Text>
           <View style={styles.action}>
-            <Feather name="phone" color="#E2E4E8" size={20} />
+            <Feather name="user" color="#E2E4E8" size={20} />
             <TextInput
               defaultValue={username}
               placeholder="Your Username"
@@ -69,7 +70,9 @@ export default function ({navigation}) {
           </View>
         </View>
         <View style={styles.field}>
-          <Button onPress={onLoginPresses}>Login</Button>
+          <Button mode="contained" onPress={onLoginPresses}>
+            Login
+          </Button>
           <Button alt onPress={() => navigation.navigate('Register')}>
             Register
           </Button>

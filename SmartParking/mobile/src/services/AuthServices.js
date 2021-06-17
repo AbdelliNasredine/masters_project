@@ -23,3 +23,15 @@ export async function register(username, password) {
   });
   return await response.json();
 }
+
+export async function getUserInformation(userToken) {
+  const response = await fetch(`${API_BASE_URL}/me`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-type': 'application/json',
+      Authorization: `Bearer ${userToken}`,
+    },
+  });
+  return await response.json();
+}

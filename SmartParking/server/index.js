@@ -9,9 +9,21 @@ const middleware = require("./middleware/sessionauth.middleware");
 const apiRoutes = require("./routes/api.route");
 const authRoutes = require("./routes/auth.route");
 const webRoutes = require("./routes/web.route");
+const unprotectedRoutes = require("./routes/unprotected.route");
 
 const app = express();
 const port = config.web.port || 3000;
+
+const hbs = exphbs.create({
+  extname: ".hbs",
+  defaultLayout: "main",
+  // helpers
+  helpers: {
+    count: function (array) {
+      return array ? array.length : 0;
+    },
+  },
+});
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -26,12 +38,13 @@ app.use(
 );
 
 app.use(express.static("public"));
-app.engine("hbs", exphbs({ extname: ".hbs", defaultLayout: "main" }));
+app.engine("hbs", hbs.engine);
 app.set("view engine", "hbs");
 
 app.use(middleware.clearCookie);
 
 // ROUTES
+app.use(unprotectedRoutes);
 app.use(authRoutes);
 app.use("/api", apiRoutes);
 app.use("/admin", webRoutes);

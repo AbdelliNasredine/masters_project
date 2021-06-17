@@ -1,40 +1,27 @@
 import React from 'react';
+import {Button} from 'react-native-paper';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 
-export default function Button({onPress, children, alt}) {
-  const btnStyle = alt ? styles.buttonStyleAlt : styles.buttonStyle;
-  const txtStyle = alt ? styles.textStyleAlt : styles.textStyle;
+export default function MyButton({onPress, children, alt}) {
+  // const btnStyle = alt ? styles.buttonStyleAlt : styles.buttonStyle;
+  // const txtStyle = alt ? styles.textStyleAlt : styles.textStyle;
 
   return (
-    <TouchableOpacity onPress={onPress}>
-      <View style={btnStyle}>
-        <Text style={txtStyle}>{children}</Text>
-      </View>
-    </TouchableOpacity>
+    // <TouchableOpacity onPress={onPress}>
+    //   <View style={btnStyle}>
+    //     <Text style={txtStyle}>{children}</Text>
+    //   </View>
+    // </TouchableOpacity>
+    <Button
+      style={styles.button}
+      mode={alt ? 'text' : 'contained'}
+      onPress={onPress}>
+      {children}
+    </Button>
   );
 }
 const styles = StyleSheet.create({
-  textStyle: {
-    color: '#fff',
-    fontSize: 16,
-    textAlign: 'center',
-  },
-  textStyleAlt: {
-    color: '#1A6CC7',
-    fontSize: 16,
-    textAlign: 'center',
-  },
-  buttonStyle: {
-    backgroundColor: '#1A6CC7',
-    borderRadius: 100,
-    marginVertical: 5,
-    padding: 16,
-  },
-  buttonStyleAlt: {
-    borderColor: '#1A6CC7',
-    borderWidth: 1,
-    borderRadius: 100,
-    marginVertical: 5,
-    padding: 16,
+  button: {
+    marginVertical: 12,
   },
 });

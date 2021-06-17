@@ -24,7 +24,7 @@ async function register(req, res) {
   const user = await User.create({
     username,
     password,
-    role: "driver",
+    role: "DRIVER",
   });
 
   res.status(200).json({ status: 200, msg: "User created successfully" });

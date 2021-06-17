@@ -12,11 +12,32 @@ const Reservation = sequelize.define(
     },
     startDate: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: true,
     },
     endDate: {
-      type: DataTypes.DOUBLE,
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    driver_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
+    },
+    spot_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    amount: {
+      type: DataTypes.DOUBLE,
+      allowNull: true,
+    },
+    parking_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    status: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      allowNull: true,
     },
   },
   {
@@ -24,7 +45,5 @@ const Reservation = sequelize.define(
     tableName: "reservation",
   }
 );
-
-Reservation.hasOne(sequelize.models.Payment);
 
 module.exports = Reservation;

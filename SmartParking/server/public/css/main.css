@@ -28,7 +28,7 @@
 }
 
 html {
-  /* font-size: 12px; */
+  font-size: 14px;
 }
 
 body {
@@ -41,12 +41,14 @@ body {
 
 input,
 textarea,
+select,
 button {
   padding: 0.5rem 1rem;
   border: 2px solid var(--border-color);
   border-radius: 0.3rem;
 }
 input:focus,
+select:focus,
 textarea:focus {
   border-color: var(--primary-color);
 }
@@ -92,6 +94,11 @@ a {
   background-clip: border-box;
   border-radius: 0.3rem;
   color: var(--danger-color);
+}
+
+.alert-success {
+  background-color: var(--success-bg-color);
+  color: var(--success-color);
 }
 
 /* ================================================================= */
@@ -372,6 +379,10 @@ a {
   /* display: flex; */
 }
 
+.actions {
+  padding: 0.5rem 0;
+}
+
 .actions button {
   cursor: pointer;
   background-color: var(--primary-color);
@@ -383,8 +394,18 @@ a {
 }
 
 .actions a {
-  text-transform: capitalize;
-  text-decoration: underline;
+  padding: 0.25rem 1rem;
+  border: 1px solid var(--primary-color);
+  border-radius: 3px;
+  text-transform: uppercase;
+  /* text-decoration: underline; */
+}
+
+.actions a.danger,
+.actions button.danger {
+  background-color: transparent;
+  border: 1px solid var(--danger-color);
+  color: var(--danger-color);
 }
 
 .actions a:not(:last-child) {
@@ -442,6 +463,16 @@ td {
   font-size: 1rem;
 }
 
+fieldset {
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  margin-bottom: 1rem;
+}
+fieldset legend {
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
 /* ================================================================= */
 /* PARK GRID */
 
@@ -465,10 +496,30 @@ td {
 .right {
   grid-area: right;
 }
+/* ================================================================= */
+/* STATS */
+.stats {
+  padding: 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.stats .item {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  padding: 1rem;
+  flex-basis: 30%;
+  background: #fff;
+  border-radius: 4px;
+}
+
+.stats .item i{
+}
 
 /* ================================================================= */
 /* SPOTS */
-
 .spots {
   display: flex;
   flex-wrap: wrap;
@@ -488,13 +539,15 @@ td {
 }
 
 .spot {
+  font-weight: 700;
+  text-align: center;
   color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 0.25rem;
-  width: 80px;
-  height: 120px;
+  width: 120px;
+  height: 180px;
   background: rgba(85, 85, 85, 0.068);
   color: rgba(85, 85, 85, 0.2);
   border: 2px dotted rgba(85, 85, 85, 0.2);
@@ -502,11 +555,13 @@ td {
 .spot.red {
   color: var(--danger-color);
   background-color: var(--danger-bg-color);
+  border-color: var(--danger-color);
 }
 
 .spot.green {
   color: var(--success-color);
   background-color: var(--success-bg-color);
+  border-color: var(--success-color);
 }
 
 .spots-header {
@@ -541,14 +596,17 @@ td {
   gap: 1rem;
 }
 .v-item span {
-  font-size: 1.5rem;
+  background-color: #f8ea1d;
+  color: #000;
+  font-family: cursive;
+  font-size: 1rem;
   text-align: center;
   letter-spacing: 4px;
   font-weight: 700;
   flex: 1;
   border-radius: 0.25rem;
-  padding: 0 0.5rem;
-  border: 1px solid var(--border-color);
+  padding: 0 1rem;
+  border: 2px solid #000;
 }
 
 /* ================================================================= */
@@ -742,5 +800,37 @@ td {
 .micromodal-slide .modal__container,
 .micromodal-slide .modal__overlay {
   will-change: transform;
+}
+/* ================================================================= */
+/* FIELD */
+.field {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.field label {
+  flex-basis: 10%;
+  font-weight: 700;
+}
+
+.field input[type="text"],
+.field input[type="password"],
+.field select,
+.field input[type="number"] {
+  text-align: left;
+  width: 100%;
+  padding: 0.25rem 0.5rem;
+  font-size: 1rem;
+  /* flex: 1; */
+}
+.field button {
+  background-color: transparent;
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  font-weight: 700;
+  font-size: 1rem;
 }
 /* ================================================================= */

@@ -1,0 +1,81 @@
+<div class="grid">
+  {{> header}}
+  {{> navigation }}
+  <main class="main">
+    <div class="body">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">User Information</h4>
+          <div class="actions">
+            <button class="danger" data-micromodal-trigger="modal-1">remove</button>
+          </div>
+        </div>
+        <div class="card-body">
+          {{log user}}
+          {{#if success}}
+            <div class="alert alert-success">
+              {{success}}
+            </div>
+          {{/if}}
+          <form action="/admin/users/{{user.dataValues.id}}/update" method="POST">
+            <div class="field">
+              <label>Username</label>
+              <input type="text" value="{{user.dataValues.username}}" disabled>
+            </div>
+            <div class="field">
+              <label>Role</label>
+              <input type="text" value="{{user.dataValues.role}}" disabled>
+            </div>
+            {{#if user.dataValues.userInfo}}
+              <div class="field">
+                <label>balance</label>
+                <input type="text" name="balance" value="{{user.dataValues.userInfo.balance}}">
+              </div>
+              <div class="field">
+                <label>firstName</label>
+                <input type="text" name="firstName" value="{{user.dataValues.userInfo.firstName}}">
+              </div>
+              <div class="field">
+                <label>lastName</label>
+                <input type="text" name="lastName" value="{{user.dataValues.userInfo.lastName}}">
+              </div>
+              <div class="field">
+                <label>phoneNumber</label>
+                <input type="text" name="phoneNumber" value="{{user.dataValues.userInfo.phoneNumber}}">
+              </div>
+              <div class="field">
+                <label>licencePlate</label>
+                <input type="text" name="licencePlate" value="{{user.dataValues.userInfo.licencePlate}}">
+              </div>
+            {{/if }}
+            <div class="field">
+              <button type="submit">
+                Update
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+{{!-- MODAL --}}
+<div class="modal micromodal-slide" id="modal-1" aria-hidden="true">
+  <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+    <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+      <header class="modal__header">
+        <h2 class="modal__title" id="modal-1-title">
+          Deletion Confirmation
+        </h2>
+        <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+      </header>
+      <main class="modal__content" id="modal-1-content">
+        <h5>Do you really want to remove this user?</h5>
+      </main>
+      <footer class="modal__footer">
+          <a href="/admin/users/{{user.dataValues.id}}/remove" class="modal__btn modal__btn-primary">yes</a>
+          <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">Close</button>
+        </footer>
+    </div>
+  </div>
+</div>

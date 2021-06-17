@@ -3,5 +3,22 @@
   {{> navigation }}
   <main class="main">
     <h1>Dashboard</h1>
+    {{!-- STATS --}}
+    <div class="stats">
+      <div class="item">
+        <i class="bi bi-people-fill"></i>
+        <p>
+          UserCount {{userCount}}
+        </p>
+      </div>
+      <div class="item">
+        ParkingCount {{parkingCount}}
+      </div>
+      <div class="item">
+        reservationCount {{reservationCount}}
+      </div>
+    </div>
+    {{!-- <div><img src="/img/car.svg" alt="car parking" style="width: 500px; height: auto; align-self=center">
+    </div> --}}
   </main>
 </div>

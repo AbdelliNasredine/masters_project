@@ -1,10 +1,30 @@
 import React, {useState, useContext, useEffect} from 'react';
-import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
+import {View, ScrollView, StyleSheet, Alert} from 'react-native';
 import ParkingItem from '../components/ParkingItem';
+import Loader from '../components/Loader';
+
+import {
+  Title,
+  Button,
+  Paragraph,
+  Text,
+  Divider,
+  IconButton,
+  ActivityIndicator,
+  Portal,
+  Dialog,
+  Colors,
+} from 'react-native-paper';
 
 import {createStackNavigator} from '@react-navigation/stack';
 import {AuthContext} from '../components/context';
-import {findAllParkingAreas} from '../services/ParkingAreaService';
+import {findAllParkingAreas, reserveSpot} from '../services/ParkingAreaService';
+
+import MQTT from 'sp-react-native-mqtt';
+
+const MQTT_BROKER_URI_CLOUD =
+  'mqtt://fogpark.francecentral.cloudapp.azure.com:1883';
+const MQTT_BROKER_URI_LOCAL = 'mqtt://192.168.2.1:1883';
 
 const ParkingStack = createStackNavigator();
 
@@ -21,7 +41,7 @@ function ParkingMain({navigation}) {
   const [isLoading, setIsLoading] = useState(true);
   const [parkingAreas, setParkingAreas] = useState(null);
 
-  const {authContext, loginState} = useContext(AuthContext);
+  const {loginState} = useContext(AuthContext);
 
   useEffect(() => {
     async function getAreas() {
@@ -31,7 +51,7 @@ function ParkingMain({navigation}) {
       setIsLoading(false);
     }
     getAreas();
-  }, [loginState.userToken]);
+  }, []);
 
   const clickHandler = id => {
     navigation.navigate('Parks', {
@@ -43,21 +63,117 @@ function ParkingMain({navigation}) {
   };
 
   if (isLoading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator
-          animating={true}
-          size="large"
-          style={{opacity: 1}}
-          color="#1A6CC7"
-        />
-      </View>
-    );
+    return <Loader />;
   } else {
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         {parkingAreas.map(p => (
           <ParkingItem key={p.id} onClick={clickHandler} {...p} />
+        ))}
+      </ScrollView>
+    );
+  }
+}
+
+function ParkinSpot({id, status, onReserve}) {
+  const free = status === 'FREE';
+  const style = free ? styles.free : styles.occupied;
+
+  return (
+    <View style={[styles.spot, style]}>
+      <Text style={[styles.spotText, style.textFree]}>
+        {free ? 'FREE' : 'OCCUPIED'}
+      </Text>
+      {free ? (
+        <Button
+          mode="contained"
+          style={{position: 'absolute', bottom: 0, left: 0, right: 0}}
+          icon="ticket"
+          color={Colors.green500}
+          onPress={() => {
+            onReserve(id);
+          }}>
+          reserve
+        </Button>
+      ) : null}
+    </View>
+  );
+}
+
+class ParkinSpotsContainer extends React.Component {
+  state = {
+    isLoading: true,
+    visible: false,
+    spots: [],
+  };
+
+  constructor(props) {
+    super(props);
+    this.id = this.props.id;
+  }
+
+  updateState = spots => {
+    this.setState({spots, isLoading: false});
+  };
+
+  onChange = msg => {
+    const id = this.id;
+    if (msg.topic.trim() === `parking/${id}`) {
+      const {data} = msg;
+      const spots = data
+        .split(' ')
+        .filter(s => s.length !== 0)
+        .map(s => {
+          const split = s.split(',');
+          return {
+            id: split[0],
+            status: split[1],
+          };
+        });
+      console.log(spots);
+      this.updateState(spots);
+    } else {
+      console.log('Wrong Topic');
+    }
+  };
+
+  async componentDidMount() {
+    const id = this.id;
+    try {
+      MQTT.createClient({
+        uri: MQTT_BROKER_URI_LOCAL,
+        clientId: 'mobile',
+      }).then(client => {
+        client.on('error', function (msg) {
+          console.log('mqtt.event.error', msg);
+        });
+        client.on('connect', function () {
+          client.subscribe(`parking/${id}`, 0);
+        });
+        client.on('message', this.onChange);
+        client.connect();
+      });
+    } catch (e) {}
+  }
+
+  async componentWillUnmount() {}
+
+  showDialog = () => this.setState({visible: true});
+  hideDialog = () => this.setState({visible: false});
+
+  render() {
+    if (this.state.isLoading) {
+      return <Text>Loading...</Text>;
+    }
+    return (
+      <View style={styles.spotsContainer}>
+        {this.state.spots.map(s => (
+          <ParkinSpot
+            id={s.id}
+            status={s.status}
+            key={s.id}
+            onReserve={this.props.onReserve}
+          />
         ))}
       </View>
     );
@@ -65,11 +181,101 @@ function ParkingMain({navigation}) {
 }
 
 function ParkingDetails({route, navigation}) {
-  const {parking} = route.params;
+  const [parking] = route.params.parking;
+
+  const [spotId, setSpotId] = useState(null);
+  const [visible, setVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const showDialog = () => setVisible(true);
+  const hideDialog = () => setVisible(false);
+
+  const {authContext, loginState} = useContext(AuthContext);
+
+  const handleReservation = id => {
+    // show confirmation
+    showDialog();
+    setSpotId(id);
+  };
+
+  const processReservation = async () => {
+    if (spotId) {
+      setLoading(true);
+      const response = await reserveSpot(
+        loginState.userToken,
+        parking.id,
+        spotId,
+      );
+      setLoading(false);
+      hideDialog();
+      if (response.error) {
+        Alert.alert('Error', response.error);
+      }
+      if (response.success) {
+        Alert.alert('Success', response.success);
+      }
+    }
+  };
 
   return (
-    <View>
-      <Text>Details {JSON.stringify(parking)}</Text>
+    <View style={styles.container}>
+      <Title style={styles.padding}>{parking.name}</Title>
+      <Divider />
+      <Paragraph style={styles.padding}>
+        <Text>Description: {parking.description}</Text>
+        <Divider />
+        <Text>
+          parking Fee:
+          {parking.rentPrice === 0 ? 'FREE' : `${parking.rentPrice} DA`}
+        </Text>
+        <Divider />
+      </Paragraph>
+      <Divider />
+      <Text style={styles.padding}>Parking Spots</Text>
+      <ScrollView>
+        <ParkinSpotsContainer
+          id={parking.id}
+          navigation={navigation}
+          onReserve={handleReservation}
+        />
+      </ScrollView>
+      <Portal>
+        <Dialog visible={visible} onDismiss={hideDialog}>
+          <Dialog.Title>
+            Reservation {!loading ? 'Confirmation' : 'Processing'}
+          </Dialog.Title>
+          <Dialog.Content>
+            {!loading ? (
+              <Paragraph>
+                By clicking on the reserve button, parking fee will ve reduced
+                from you account, do agree ?
+              </Paragraph>
+            ) : (
+              <View style={{flexDirection: 'row'}}>
+                <View>
+                  <ActivityIndicator
+                    animating={true}
+                    color={Colors.purple400}
+                  />
+                </View>
+                <Paragraph style={{marginLeft: 23}}>Please wait...</Paragraph>
+              </View>
+            )}
+          </Dialog.Content>
+          {!loading ? (
+            <Dialog.Actions>
+              <Button
+                style={{marginHorizontal: 12}}
+                mode="contained"
+                onPress={processReservation}>
+                I agree
+              </Button>
+              <Button mode="contained" onPress={hideDialog}>
+                Cancel
+              </Button>
+            </Dialog.Actions>
+          ) : null}
+        </Dialog>
+      </Portal>
     </View>
   );
 }
@@ -84,8 +290,55 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  padding: {
+    paddingHorizontal: 10,
+  },
   container: {
     flex: 1,
-    paddingHorizontal: 10,
+    // paddingHorizontal: 10,
+  },
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0,
+  },
+  spotsContainer: {
+    // width: '100%',
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  spot: {
+    borderRadius: 6,
+    margin: 8,
+    backgroundColor: '#ccc',
+    padding: 32,
+    width: 160,
+    // flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 150,
+  },
+  spotText: {
+    fontWeight: 'bold',
+    fontSize: 13,
+    textAlign: 'center',
+  },
+  textFree: {
+    color: Colors.green600,
+  },
+  textOccupaied: {
+    color: Colors.red600,
+  },
+  free: {
+    borderColor: Colors.green500,
+    backgroundColor: Colors.green100,
+    borderWidth: 1,
+  },
+  occupied: {
+    borderColor: '#e91010',
+    backgroundColor: '#ffdcdc',
+    borderWidth: 1,
   },
 });

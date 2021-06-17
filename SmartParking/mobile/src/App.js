@@ -1,5 +1,4 @@
 import React, {useMemo, useEffect} from 'react';
-import {View, ActivityIndicator, StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {AuthContext} from './components/context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -7,6 +6,8 @@ import {initialLoginState, loginReducer} from './reducers/loginReducer';
 
 import RootStackScreen from './screens/RootStackScreen';
 import MainNavigationScreen from './screens/MainNavigationScreen';
+
+import Loader from './components/Loader';
 
 function App() {
   const [loginState, dispatch] = React.useReducer(
@@ -29,29 +30,22 @@ function App() {
     [],
   );
 
+  const onMount = async () => {
+    let userToken = null;
+    try {
+      userToken = await AsyncStorage.getItem('userToken');
+    } catch (e) {
+      console.log(e);
+    }
+    dispatch({type: 'RETRIEVE_TOKEN', token: userToken});
+  };
+
   useEffect(() => {
-    setTimeout(async () => {
-      let userToken = null;
-      try {
-        userToken = await AsyncStorage.getItem('userToken');
-      } catch (e) {
-        console.log(e);
-      }
-      dispatch({type: 'RETRIEVE_TOKEN', token: userToken});
-    }, 1000);
+    onMount();
   }, []);
 
   if (loginState.isLoading) {
-    return (
-      <View style={styles.container}>
-        <ActivityIndicator
-          animating={true}
-          size="large"
-          style={{opacity: 1}}
-          color="#1A6CC7"
-        />
-      </View>
-    );
+    return <Loader />;
   }
   return (
     <AuthContext.Provider value={{authContext, loginState, dispatch}}>
@@ -65,13 +59,5 @@ function App() {
     </AuthContext.Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
 
 export default App;

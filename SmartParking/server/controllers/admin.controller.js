@@ -1,13 +1,32 @@
+const { Op } = require("sequelize");
 const User = require("../models/user.model");
+const Reservation = require("../models/reservation.model");
 const Parking = require("../models/parking.model");
 
-// GET
-function index(req, res) {
+async function index(req, res) {
   res.redirect("/admin/dashboard");
 }
 
-function dashboardPage(req, res) {
-  res.render("dashboard");
+async function dashboardPage(req, res) {
+  const userCount = await User.findAll({
+    where: {
+      id: {
+        [Op.not]: req.session.user,
+      },
+    },
+  });
+
+  const reservationCount = await Reservation.findAll();
+  const parkingCount = await Parking.findAll();
+
+  console.log("-------- LOGS ----------");
+  console.log(`userCount = ${userCount.length}`);
+
+  res.render("dashboard", {
+    userCount: userCount.length,
+    reservationCount: reservationCount.length,
+    parkingCount: parkingCount.length,
+  });
 }
 
 async function parksPage(req, res) {
@@ -16,24 +35,24 @@ async function parksPage(req, res) {
 }
 
 async function usersPage(req, res) {
-  res.render("users");
-}
-
-async function paymentsPage(req, res) {
-  res.render("payments");
+  const users = await User.findAll({
+    where: {
+      id: {
+        [Op.not]: req.session.user,
+      },
+    },
+  });
+  res.render("users", { users });
 }
 
 async function profilePage(req, res) {
   res.render("profile");
 }
 
-// POST
-
 module.exports = {
   index,
   dashboardPage,
   parksPage,
   usersPage,
-  paymentsPage,
   profilePage,
 };

@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {Button} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function ParkingItem({
@@ -16,16 +17,22 @@ export default function ParkingItem({
     <View style={styles.parkingItem}>
       <View style={styles.parkingItemDescription}>
         <Text style={styles.parkingName}>{name}</Text>
-        <Text style={styles.parkingDescription}>1km | {description}</Text>
+        <Text style={styles.parkingDescription}>{description}</Text>
         <Text style={styles.parkingSize}>{address}</Text>
       </View>
       <View style={styles.parkingItemActions}>
-        <TouchableOpacity
+        <Button
+          mode="outlined"
+          onPress={() => onClick(id)}
+          style={styles.parkingItemButton}>
+          view
+        </Button>
+        {/* <TouchableOpacity
           style={styles.parkingItemButton}
           onPress={() => onClick(id)}>
           <Icon name="eye" size={16} />
           <Text style={styles.parkingItemButtonText}>Show</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );
@@ -56,12 +63,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   parkingItemButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
     borderRadius: 100,
-    backgroundColor: '#E2E4E8',
   },
   parkingItemButtonAlt: {
     backgroundColor: '#1A6CC7',

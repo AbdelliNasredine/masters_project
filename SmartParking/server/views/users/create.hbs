@@ -1,0 +1,71 @@
+<div class="grid">
+  {{> header}}
+  {{> navigation }}
+  <main class="main">
+    <div class="body">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Create new User</h4>
+        </div>
+        <div class="card-body">
+          {{#if error}}
+            <div class="alert alert-danger">
+              {{error}}
+            </div>
+          {{/if}}
+          {{#if success}}
+            <div class="alert alert-success">
+              {{success}}
+            </div>
+          {{/if}}
+          <form action="/admin/users/new" method="POST">
+            <fieldset>
+              <legend>Personal Information</legend>
+              <div class="field">
+                <label>firstName</label>
+                <input type="text" name="firstName" required>
+              </div>
+              <div class="field">
+                <label>lastName</label>
+                <input type="text" name="lastName" required>
+              </div>
+              <div class="field">
+                <label>balance (DA)</label>
+                <input type="number" name="balance" required>
+              </div>
+              <div class="field">
+                <label>phoneNumber</label>
+                <input type="text" pattern="[0-9]{10}" name="phoneNumber" maxlength="10" required>
+              </div>
+              <div class="field">
+                <label>licencePlate</label>
+                <input type="text" name="licencePlate" required>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>Account Information</legend>
+              <div class="field">
+                <label>Username</label>
+                <input type="text" name="username" required>
+              </div>
+              <div class="field">
+                <label>password</label>
+                <input type="password" name="password" required>
+              </div>
+              <div class="field">
+                <label>Account type</label>
+                <select name="role">
+                  <option value="ADMIN">ADMIN</option>
+                  <option value="DRIVER ">DRIVER</option>
+                </select>
+              </div>
+            </fieldset>
+            <div class="field">
+              <button type="submit">ADD</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

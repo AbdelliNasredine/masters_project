@@ -1,0 +1,43 @@
+<div class="grid">
+  {{> header}}
+  {{> navigation }}
+  <main class="main">
+    {{!-- {{log reservations}} --}}
+    <h1>Reservations</h1>
+    <div class="body">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Reservations list</h4>
+        </div>
+        <div class="card-body">
+          <table>
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>startDate</th>
+                <th>endDate</th>
+                <th>AssociatedTo</th>
+                <th>Parking info</th>
+                <th>Total paid</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{!-- print reservation data --}}
+              {{#each reservations}} 
+              <tr>
+                {{log this.dataValues}}
+                <td>{{this.dataValues.id}}</td>
+                <td>{{this.dataValues.startDate}}</td>
+                <td>{{this.dataValues.endDate}}</td>
+                <td>{{this.dataValues.driver_id}}</td>
+                <td>{{this.dataValues.spot_id}}</td>
+                <td>{{this.dataValues.amount}}</td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
