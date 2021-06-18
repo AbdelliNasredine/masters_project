@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState, useCallback} from 'react';
 import {View, SafeAreaView, StyleSheet} from 'react-native';
 import {
   Avatar,
@@ -7,6 +7,8 @@ import {
   Text,
   TouchableRipple,
 } from 'react-native-paper';
+
+import {useFocusEffect} from '@react-navigation/native';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Loader from '../components/Loader';
@@ -17,18 +19,24 @@ import {getUserInformation} from '../services/AuthServices';
 export default function ({navigation}) {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
+  const [reservationCount, setReservationCount] = useState(0);
   const {authContext, loginState} = useContext(AuthContext);
 
   const onMount = async () => {
     setIsLoading(true);
-    const user = await getUserInformation(loginState.userToken);
+    const {user, reservationCount} = await getUserInformation(
+      loginState.userToken,
+    );
     setUser(user);
+    setReservationCount(reservationCount);
     setIsLoading(false);
   };
 
-  useEffect(() => {
-    onMount();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      onMount();
+    }, []),
+  );
 
   if (!user || isLoading) {
     return <Loader />;
@@ -89,7 +97,7 @@ export default function ({navigation}) {
           <Caption>Wallet</Caption>
         </View>
         <View style={styles.infoBox}>
-          <Title>0</Title>
+          <Title>{reservationCount}</Title>
           <Caption>Reservations</Caption>
         </View>
       </View>

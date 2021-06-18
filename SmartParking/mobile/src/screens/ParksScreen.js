@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useContext, useEffect, useCallback} from 'react';
 import {View, ScrollView, StyleSheet, Alert} from 'react-native';
 import ParkingItem from '../components/ParkingItem';
 import Loader from '../components/Loader';
@@ -15,6 +15,8 @@ import {
   Dialog,
   Colors,
 } from 'react-native-paper';
+
+import {useFocusEffect} from '@react-navigation/native';
 
 import {createStackNavigator} from '@react-navigation/stack';
 import {AuthContext} from '../components/context';
@@ -43,15 +45,18 @@ function ParkingMain({navigation}) {
 
   const {loginState} = useContext(AuthContext);
 
-  useEffect(() => {
-    async function getAreas() {
-      setIsLoading(true);
-      const parkings = await findAllParkingAreas(loginState.userToken);
-      setParkingAreas(parkings);
-      setIsLoading(false);
-    }
-    getAreas();
-  }, []);
+  async function getAreas() {
+    setIsLoading(true);
+    const parkings = await findAllParkingAreas(loginState.userToken);
+    setParkingAreas(parkings);
+    setIsLoading(false);
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      getAreas();
+    }, []),
+  );
 
   const clickHandler = id => {
     navigation.navigate('Parks', {

@@ -22,7 +22,6 @@
   text-rendering: optimizeLegibility;
   outline: none;
   border: none;
-  font-family: acumin-pro, Arial, Helvetica, sans-serif;
   /* font-family: Arial, Helvetica, sans-serif; */
   color: var(--text-color-light);
 }
@@ -32,6 +31,7 @@ html {
 }
 
 body {
+  font-family: acumin-pro, Arial, Helvetica, sans-serif;
   color: var(--text-color-light);
   background-color: rgb(247, 247, 247);
   font-weight: 400;
@@ -349,7 +349,7 @@ a {
   background-color: #fff;
   color: var(--text-color-light);
   border-radius: 0.5rem;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); */
   /* border: 1px solid var(--text-color-light); */
   border: 1px solid var(--border-color);
 }
@@ -507,15 +507,26 @@ fieldset legend {
 
 .stats .item {
   display: flex;
+  flex: 1;
   flex-direction: column;
   text-align: left;
   padding: 1rem;
-  flex-basis: 30%;
   background: #fff;
   border-radius: 4px;
+  border: 1px solid var(--border-color);
 }
 
-.stats .item i{
+.stats .item i {
+  margin-bottom: 0.5rem;
+}
+
+/* .stats .item i,
+.stats .item strong {
+  color: var(--primary-color);
+} */
+
+.stats .item p {
+  font-size: 1.2rem;
 }
 
 /* ================================================================= */

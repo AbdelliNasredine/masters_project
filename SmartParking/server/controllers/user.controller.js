@@ -1,3 +1,4 @@
+const Reservation = require("../models/reservation.model");
 const User = require("../models/user.model");
 
 async function getAllUsers(req, res) {
@@ -14,7 +15,15 @@ async function updateUserInformation(req, res) {
 async function getAuthUserInformation(req, res) {
   const { id } = req.auth;
   const user = await User.findByPk(id);
-  res.json(user);
+  // get total reservation of user
+  let reservationCount = await Reservation.findAll({
+    where: {
+      driver_id: id,
+      status: true,
+    },
+  });
+  reservationCount = reservationCount ? reservationCount.length : 0;
+  res.json({ user, reservationCount });
 }
 
 async function getUserPage(req, res) {
