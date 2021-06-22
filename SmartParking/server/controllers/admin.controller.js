@@ -17,7 +17,7 @@ async function dashboardPage(req, res) {
   });
 
   const reservationCount = await Reservation.findAll();
-  const parkingCount = await Parking.findAll();
+  const parkings = await Parking.findAll();
 
   console.log("-------- LOGS ----------");
   console.log(`userCount = ${userCount.length}`);
@@ -25,7 +25,8 @@ async function dashboardPage(req, res) {
   res.render("dashboard", {
     userCount: userCount.length,
     reservationCount: reservationCount.length,
-    parkingCount: parkingCount.length,
+    parkingCount: parkings.length,
+    parkings: parkings.map((p) => [p.lat, p.lon]),
   });
 }
 

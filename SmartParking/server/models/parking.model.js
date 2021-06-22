@@ -44,7 +44,7 @@ const Parking = sequelize.define(
     },
     reservedSpots: {
       type: DataTypes.JSON,
-      allowNull: false,
+      allowNull: true,
     },
   },
   {
