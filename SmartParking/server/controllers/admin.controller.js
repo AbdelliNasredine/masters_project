@@ -26,7 +26,7 @@ async function dashboardPage(req, res) {
     userCount: userCount.length,
     reservationCount: reservationCount.length,
     parkingCount: parkings.length,
-    parkings: parkings.map((p) => [p.lat, p.lon]),
+    parkings: parkings.map((p) => [p.lat, p.lon, p.name]),
   });
 }
 

@@ -3,7 +3,16 @@
   {{> navigation }}
   <main class="main">
     {{!-- {{log reservations}} --}}
-    <h1>Reservations</h1>
+    <div class="header">
+      <div>
+        <h2 class="header-title">
+          Reservations
+        </h2>
+        <p>View reservations</p>
+      </div>
+      <div class="header-actions">
+      </div>
+    </div>
     <div class="body">
       <div class="card">
         <div class="card-header">
@@ -22,17 +31,17 @@
               </tr>
             </thead>
             <tbody>
-              {{!-- print reservation data --}}
+              {{!-- show reservation data --}}
               {{#each reservations}} 
-              <tr>
-                {{log this.dataValues}}
-                <td>{{this.dataValues.id}}</td>
-                <td>{{this.dataValues.startDate}}</td>
-                <td>{{this.dataValues.endDate}}</td>
-                <td>{{this.dataValues.driver_id}}</td>
-                <td>{{this.dataValues.spot_id}}</td>
-                <td>{{this.dataValues.amount}}</td>
-              </tr>
+                <tr>
+                  {{log this.dataValues}}
+                  <td>{{this.dataValues.id}}</td>
+                  <td>{{this.dataValues.startDate}}</td>
+                  <td>{{this.dataValues.endDate}}</td>
+                  <td>{{this.dataValues.driver_id}}</td>
+                  <td>{{this.dataValues.spot_id}}</td>
+                  <td>{{this.dataValues.amount}}</td>
+                </tr>
               {{/each}}
             </tbody>
           </table>

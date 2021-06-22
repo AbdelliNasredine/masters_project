@@ -3,16 +3,17 @@
   {{> navigation }}
   <main class="main">
     <h1>Dashboard</h1>
+    <h4>Welcome to FogSmartParking Surveillance Cloud Management App </h4>
     {{!-- STATS --}}
     <div class="stats">
-      <div class="item">
+      <div class="item card">
         <i class="fas fa-users fa-3x"></i>
         {{!-- <i class="fas fa-thumbs-up fa-5x"></i> --}}
         <p>
           <strong>{{userCount}}</strong> registered user(s)
         </p>
       </div>
-      <div class="item">
+      <div class="item card">
         <i class="fas fa-parking fa-3x"></i>
         <p>
           <strong>
@@ -21,7 +22,7 @@
           parking zone(s)
         </p>
       </div>
-      <div class="item">
+      <div class="item card">
         <i class="fas fa-car fa-3x"></i>
         <p>
           <strong>
@@ -35,7 +36,7 @@
       <div class="card-header">
         <h4 class="card-title">Parkings location</h4>
       </div>
-      <div class="card-body" style="padding: 0">
+      <div class="card-body">
         <div id="map"></div>
         {{!-- <canvas id="myChart"></canvas> --}}
       </div>
@@ -45,7 +46,7 @@
 </div>
 {{log parkings}}
 <script>
-  var parking_geo_data = document.querySelector("input[type=hidden]").value;
+  const parking_geo_data = document.querySelector("input[type=hidden]").value;
   console.log(parking_geo_data);
 
   // parsing
@@ -53,62 +54,27 @@
   console.log(tmp);
   
   let parsedData = [];
-  for(let i=0; i < tmp.length; i += 2) {
-    parsedData.push([tmp[i + 1], tmp[i]])
+  for(let i=0; i < tmp.length; i += 3) {
+    parsedData.push({ name: tmp[i + 2], geo: [tmp[i + 1], tmp[i]] })
   }
   console.log(parsedData);
 
   mapboxgl.accessToken = 'pk.eyJ1IjoibmFzLWVtYmFkIiwiYSI6ImNrNHZ3NWNsZzBhcGUza3JwYzgwMnI2bjcifQ.3-qlI_rVEJG7RyF7GF52Eg';
-  var map = new mapboxgl.Map({
+  
+  const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v11',
     center: [-2.216044449820021, 31.623875269142683],
     zoom: 11
   });
 
-  parsedData.forEach(geo => {
+  parsedData.forEach(p => {
+    const popup = new mapboxgl.Popup()
+      .setText(p.name)
+      .addTo(map);
     (new mapboxgl.Marker())
-      .setLngLat(geo)
+      .setLngLat(p.geo)
+      .setPopup(popup)
       .addTo(map);
   })
-  
-  //var marker1 = new mapboxgl.Marker()
-  //                        .setLngLat([-2.225993318978396, 31.600805859220127])
-  //                        .addTo(map);
-  
-  var ctx = document.getElementById('myChart').getContext('2d');
-  /*var myChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-          labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-          datasets: [{
-              label: '# of Votes',
-              data: [12, 19, 3, 5, 2, 3],
-              backgroundColor: [
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 206, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(153, 102, 255, 0.2)',
-                  'rgba(255, 159, 64, 0.2)'
-              ],
-              borderColor: [
-                  'rgba(255, 99, 132, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(255, 159, 64, 1)'
-              ],
-              borderWidth: 1
-          }]
-      },
-      options: {
-          scales: {
-              y: {
-                  beginAtZero: true
-              }
-          }
-      }
-  });*/
 </script>

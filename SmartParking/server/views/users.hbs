@@ -2,13 +2,21 @@
   {{> header}}
   {{> navigation }}
   <main class="main">
+    <div class="header">
+      <div>
+        <h2 class="header-title">
+          Manage Users
+        </h2>
+        <p>Create,View ,Update ou Delete a user</p>
+      </div>
+      <div class="header-actions">
+        <a href="/admin/users/new" class="btn btn-primary">Create new user</a>
+      </div>
+    </div>
     <div class="body">
       <div class="card">
         <div class="card-header">
           <h4 class="card-title">Users list</h4>
-          <div class="actions">
-            <a href="/admin/users/new">Create new user</a>
-          </div>
         </div>
         <div class="card-body">
           {{!-- {{#if msg}}
