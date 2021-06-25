@@ -1,0 +1,3 @@
+MicroModal.init();
+
+// mqtt functions
