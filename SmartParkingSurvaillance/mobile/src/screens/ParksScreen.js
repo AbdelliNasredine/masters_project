@@ -23,10 +23,7 @@ import {AuthContext} from '../components/context';
 import {findAllParkingAreas, reserveSpot} from '../services/ParkingAreaService';
 
 import MQTT from 'sp-react-native-mqtt';
-
-const MQTT_BROKER_URI_CLOUD =
-  'mqtt://fogpark.francecentral.cloudapp.azure.com:1883';
-const MQTT_BROKER_URI_LOCAL = 'mqtt://192.168.2.1:1883';
+import {MQTT_BROKER_URL} from '../constants';
 
 const ParkingStack = createStackNavigator();
 
@@ -146,7 +143,7 @@ class ParkinSpotsContainer extends React.Component {
     const id = this.id;
     try {
       MQTT.createClient({
-        uri: MQTT_BROKER_URI_LOCAL,
+        uri: MQTT_BROKER_URL,
         clientId: 'mobile',
       }).then(client => {
         client.on('error', function (msg) {

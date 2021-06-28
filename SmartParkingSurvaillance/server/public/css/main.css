@@ -41,8 +41,7 @@ body {
 
 input,
 textarea,
-select,
-button {
+select {
   padding: 0.5rem 1rem;
   border: 2px solid var(--border-color);
   border-radius: 0.3rem;
@@ -59,7 +58,7 @@ a {
   font-weight: 400;
 }
 
-.btn {
+/* .btn {
   padding: 0.5em 1em;
   border: none;
   color: #fff;
@@ -68,7 +67,7 @@ a {
   cursor: pointer;
   transition: all 0.1s ease-in;
   border-radius: 0.3rem;
-}
+} */
 
 .btn.btn-primary {
   background-color: var(--primary-color);
@@ -400,12 +399,16 @@ a {
 }
 
 .actions a {
+  text-transform: uppercase;
+}
+/* 
+.actions a {
   padding: 0.25rem 1rem;
   border: 1px solid var(--primary-color);
   border-radius: 3px;
   text-transform: uppercase;
-  /* text-decoration: underline; */
-}
+  text-decoration: underline;
+} */
 
 .actions a.danger,
 .actions button.danger {
@@ -417,11 +420,11 @@ a {
   color: #fff;
 }
 
-.actions a:not(:last-child) {
+/* .actions a:not(:last-child) {
   padding-right: 0.5em;
   margin-right: 0.5em;
   border-right: 1px solid var(--border-color);
-}
+} */
 
 /* ================================================================= */
 /* TABLE */

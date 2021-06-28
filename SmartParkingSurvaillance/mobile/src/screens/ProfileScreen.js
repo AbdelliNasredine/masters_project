@@ -103,7 +103,7 @@ export default function ({navigation}) {
       </View>
 
       <View style={styles.menuWrapper}>
-        <TouchableRipple onPress={() => {}}>
+        {/* <TouchableRipple onPress={() => {}}>
           <View style={styles.menuItem}>
             <Icon name="ticket-confirmation" color="#1A6CC7" size={25} />
             <Text style={styles.menuItemText}>Reservations History</Text>
@@ -114,7 +114,7 @@ export default function ({navigation}) {
             <Icon name="credit-card" color="#1A6CC7" size={25} />
             <Text style={styles.menuItemText}>Payments History</Text>
           </View>
-        </TouchableRipple>
+        </TouchableRipple> */}
         <TouchableRipple
           onPress={() => {
             authContext.logout();

@@ -51,20 +51,19 @@ app.use("/api", apiRoutes);
 app.use("/admin", webRoutes);
 app.get("/", (req, res) => res.redirect("/admin"));
 
-// MQTT CONFIG
+// MQTT & WEBSOCKET INIT
 const client = mqtt.connect("mqtt://localhost");
 
 client.on("connect", function () {
-  client.subscribe("presence", function (err) {
-    if (!err) {
-      client.publish("presence", "Hello mqtt");
-    }
+  client.subscribe("#", function (err) {
+    // todo : handle error case
   });
 });
 
 client.on("message", function (topic, message) {
-  // message is Buffer
   console.log(message.toString());
+  console.log(topic);
+  console.log(`[MQTT]: topic : ${topic} , message: ${message.toString()}`);
   client.end();
 });
 

@@ -2,5 +2,8 @@
 // export const API_BASE_URL = 'http://192.168.43.40:8080/api';
 // export const API_BASE_URL = 'http://192.168.137.196:8080/api';
 // export const API_BASE_URL = 'http://localhost:8080/api';
-export const API_BASE_URL = 'http://192.168.2.100:8080/api';
+// export const API_BASE_URL = 'http://192.168.2.100:8080/api';
 // export const API_BASE_URL = 'http://192.168.1.3:8080/api';
+const CLOUD_IP = '52.136.118.50';
+export const API_BASE_URL = `http://${CLOUD_IP}:8080/api`;
+export const MQTT_BROKER_URL = `mqtt://${CLOUD_IP}:1883`;

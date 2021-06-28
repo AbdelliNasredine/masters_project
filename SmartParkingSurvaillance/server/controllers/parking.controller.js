@@ -32,7 +32,11 @@ async function view(req, res) {
 }
 async function getUpdate(req, res) {}
 async function postUpdate(req, res) {}
-async function getRemove(req, res) {}
+async function getRemove(req, res) {
+  const { id } = req.params;
+  await Parking.destroy({ where: { id } });
+  res.redirect("/admin/parks");
+}
 async function postRemove(req, res) {}
 
 async function addVehicleToAuthorizedList(req, res) {

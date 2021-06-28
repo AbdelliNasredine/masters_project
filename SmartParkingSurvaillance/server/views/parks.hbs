@@ -19,14 +19,14 @@
           <h4 class="card-title">parking list</h4>
         </div>
         <div class="card-body">
-          <table>
+          <table class="table">
             <thead>
               <tr>
                 <th>name</th>
                 <th>address</th>
                 <th>latitude</th>
                 <th>longitude</th>
-                <th>rentPrice</th>
+                <th>rentFee</th>
                 <th>actions</th>
               </tr>
             </thead>
@@ -41,7 +41,9 @@
                       <td>{{#if rentPrice}} {{rentPrice}} DA  {{else}} FREE {{/if}}</td>
                       <td>
                         <div class="actions">
-                          <a href="/admin/parks/{{id}}/view">view</a>
+                          <a class="btn btn-outline-primary" href="/admin/parks/{{id}}/view">view</a>
+                          {{!-- <button type="button" class="btn btn-outline-danger">Danger</button> --}}
+                          <a class="btn btn-outline-danger" href="/admin/parks/{{id}}/remove">delete</a>
                         </div>
                       </td>
                   {{/dataValues}}
