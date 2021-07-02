@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 module.exports = {
+  env: process.env.ENV,
   web: {
     port: process.env.PORT,
     sessionSecret: process.env.SESSION_SECRET,

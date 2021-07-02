@@ -3,6 +3,7 @@
   {{> navigation }}
   <main class="main">
     <div class="header">
+      <input type="hidden" name="pid" value="{{parking.id}}">
       <div>
         <h3 class="header-title">{{parking.name}}</h3>
         <p>{{parking.description}}</p>
@@ -29,37 +30,8 @@
               </div>
               <div>
                 <b><label>Rent fees</label></b>
-                <p>{{#if parking.rentPrice}} {{parking.rentPrice}} DA  {{else}} FREE {{/if}}</p>
+                <p>{{#if parking.rentPrice}} {{parking.rentPrice}} DA {{else}} FREE {{/if}}</p>
               </div>
-              <div>
-                <b><label>Current Reservation Count</label></b>
-                <p>{{count  parking.reservedSpots}} car spot(s) is reserved</p>
-              </div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-header">
-              <h5 class="card-title">Authorized Vehicles</h5>
-              {{!-- <div class="actions">
-                <button data-micromodal-trigger="modal-1">add</button>
-              </div> --}}
-            </div>
-            <div class="card-body">
-              {{!-- <div class="v-list">
-                {{#if parking.authorizedVehicles}} 
-                  {{#each parking.authorizedVehicles}}
-                    <div class="v-item">
-                      <span> {{this}} </span>
-                    </div>
-                  {{/each}}
-                {{else}}
-                  <div style="text-align: center;">
-                    <p>
-                      No authorized vehicles is added, please add one manually
-                    </p>
-                  </div>
-                {{/if}}
-              </div> --}}
             </div>
           </div>
         </div>
@@ -70,7 +42,7 @@
             </div>
             <div class="card-body">
               {{#if parking.parkingSpots}}
-                <div class="spots-header">
+              <div class="spots-header">
                 <h5>View Spot Status</h5>
                 <div class="spots-status">
                   Free <div class="indicator green"></div>
@@ -78,15 +50,16 @@
                 </div>
               </div>
               <div class="spots">
+                {{!-- ADD HERE --}}
                 {{#each parking.parkingSpots}}
-                  <div class="spot">Spot <br> #{{this.id}}</div>
+                <div class="spot">Spot <br> #{{this.id}}</div>
                 {{/each}}
               </div>
               {{else}}
-                <div class="no-spots">
-                  No Parking Spot found, please configure the parking
-                  <button data-micromodal-trigger="modal-2">configure</button>
-                </div>
+              <div class="no-spots">
+                No Parking Spot found, please configure the parking
+                <button data-micromodal-trigger="modal-2">configure</button>
+              </div>
               {{/if}}
             </div>
           </div>
@@ -95,100 +68,49 @@
     </div>
   </main>
 </div>
-
-{{!-- Stack container for toast messages --}}
-  {{!-- <div class="toast-container position-absolute top-0 end-0 p-3">
-
-    <!-- Then put toasts within -->
-    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" ata-bs-autohide="false">
-      <div class="toast-header">
-        <strong class="me-auto">Car Detected</strong>
-        <small class="text-muted">just now</small>
-        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-      <div class="toast-body">
-        9238798273987
-      </div>
-    </div>
-
-    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-header">
-        <strong class="me-auto">Car Detected</strong>
-        <small class="text-muted">2 seconds ago</small>
-        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-      <div class="toast-body">
-        984729384729834
-      </div>
-    </div>
-  </div> --}}
-
-
-
-{{!-- MODAL - 1
-<div class="modal micromodal-slide" id="modal-1" aria-hidden="true">
-  <div class="modal__overlay" tabindex="-1" data-micromodal-close>
-    <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
-      <header class="modal__header">
-        <h2 class="modal__title" id="modal-1-title">
-          Authorize a vehicle manually
-        </h2>
-        <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
-      </header>
-      <main class="modal__content" id="modal-1-content">
-        <form action="/admin/parks/{{parking.id}}/add_vehicle" method="POST" class="form">
-          <label>
-            Licence plate
-            <input type="text" name="licencePlate" required>
-          </label>
-          <label>
-            <button class="btn btn-primary" type="submit">add</button>
-          </label>
-        </form>
-      </main>
-    </div>
-  </div>
-</div>
-
-{{!-- MODAL - 2 --}}
-<div class="modal micromodal-slide" id="modal-2" aria-hidden="true">
-  <div class="modal__overlay" tabindex="-1" data-micromodal-close>
-    <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
-      <header class="modal__header">
-        <h2 class="modal__title" id="modal-1-title">
-          Configure Your Parking area
-        </h2>
-        <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
-      </header>
-      <main class="modal__content" id="modal-1-content">
-        <form action="/admin/parks/{{parking.id}}/configure" method="POST" class="form">
-          <label>
-            How many parking spots you parking has ?
-            <input type="number" min="1" max="99" name="size" required>
-          </label>
-          <label>
-            <button class="btn btn-primary" type="submit">configure</button>
-          </label>
-        </form>
-      </main>
-    </div>
-  </div>
-</div>
-         --}}
+<script src="/node_modules/tata-js/dist/tata.js"></script>
 <script>
-var client = mqtt.connect('ws://192.168.2.1:9001',)
+  const updateSpots = (list) => {
+    const spotsElement = document.querySelector(".spots");
+    spotsElement.innerHTML = "";
+    list.forEach(item => {
+      spotsElement.innerHTML += `
+        <div class="spot ${item.status == "FREE" ? "green" : "red"}">Spot <br> ${item.id}</div>
+      `;
+    });
+  }
 
-client.on('connect', function () {
-  client.subscribe('#', function (err) {
-    if (!err) {
-      client.publish('presence', 'Hello mqtt')
+  const updateUI = (data) => {
+    const parkingId = document.querySelector("input[type=hidden]").value;
+    const spilt = data.split("$");
+    const topic = spilt[0].split("/");
+    console.log(topic[0]);
+    if (topic[0] == "parking" && topic[1] == parkingId) {
+      const spotStatus = spilt[1].split(" ");
+      console.log(spotStatus);
+      let spotsList = [];
+      for (let i = 0; i < spotStatus.length; i++) {
+        const spot = spotStatus[i].split(",");
+        spotsList.push({ id: spot[0], status: spot[1].trim() });
+      }
+      updateSpots(spotsList);
+    } else if (topic[0] == "auth") {
+
+      const plate = spilt[1];
+      tata.warn('Licence Plate Detected', plate);
     }
-  })
-})
+  }
 
-client.on('message', function (topic, message) {
-  // message is Buffer
-  console.log(message.toString())
-  client.end()
-})
+  // Create WebSocket connection.
+  const socket = new WebSocket('ws://localhost:8080');
+
+  // Connection opened
+  socket.addEventListener('open', function (event) {
+    console.log("Connected to websockets server");
+  });
+  // Listen for messages
+  socket.addEventListener('message', function (event) {
+    console.log('Message from server ', event.data);
+    updateUI(event.data);
+  });
 </script>

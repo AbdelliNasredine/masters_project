@@ -29,7 +29,7 @@ async function getAuthUserInformation(req, res) {
 async function getUserPage(req, res) {
   const { id } = req.params;
   const user = await User.findByPk(id);
-  res.render("users/view", { user });
+  res.render("users/view", { user, isAdmin: user.role === "ADMIN" });
 }
 
 async function updateUser(req, res) {

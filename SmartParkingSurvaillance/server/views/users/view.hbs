@@ -13,9 +13,9 @@
         <div class="card-body">
           {{log user}}
           {{#if success}}
-            <div class="alert alert-success">
-              {{success}}
-            </div>
+          <div class="alert alert-success">
+            {{success}}
+          </div>
           {{/if}}
           <form action="/admin/users/{{user.dataValues.id}}/update" method="POST">
             <div class="field">
@@ -26,33 +26,35 @@
               <label>Role</label>
               <input type="text" value="{{user.dataValues.role}}" disabled>
             </div>
+            {{#if isAdmin }}
             {{#if user.dataValues.userInfo}}
-              <div class="field">
-                <label>balance</label>
-                <input type="text" name="balance" value="{{user.dataValues.userInfo.balance}}">
-              </div>
-              <div class="field">
-                <label>firstName</label>
-                <input type="text" name="firstName" value="{{user.dataValues.userInfo.firstName}}">
-              </div>
-              <div class="field">
-                <label>lastName</label>
-                <input type="text" name="lastName" value="{{user.dataValues.userInfo.lastName}}">
-              </div>
-              <div class="field">
-                <label>phoneNumber</label>
-                <input type="text" name="phoneNumber" value="{{user.dataValues.userInfo.phoneNumber}}">
-              </div>
-              <div class="field">
-                <label>licencePlate</label>
-                <input type="text" name="licencePlate" value="{{user.dataValues.userInfo.licencePlate}}">
-              </div>
+            <div class="field">
+              <label>balance</label>
+              <input type="text" name="balance" value="{{user.dataValues.userInfo.balance}}">
+            </div>
+            <div class="field">
+              <label>firstName</label>
+              <input type="text" name="firstName" value="{{user.dataValues.userInfo.firstName}}">
+            </div>
+            <div class="field">
+              <label>lastName</label>
+              <input type="text" name="lastName" value="{{user.dataValues.userInfo.lastName}}">
+            </div>
+            <div class="field">
+              <label>phoneNumber</label>
+              <input type="text" name="phoneNumber" value="{{user.dataValues.userInfo.phoneNumber}}">
+            </div>
+            <div class="field">
+              <label>licencePlate</label>
+              <input type="text" name="licencePlate" value="{{user.dataValues.userInfo.licencePlate}}">
+            </div>
             {{/if }}
             <div>
               <button class="btn btn-success" type="submit">
                 Update
               </button>
             </div>
+            {{/if}}
           </form>
         </div>
       </div>
@@ -73,9 +75,9 @@
         <h5>Do you really want to remove this user?</h5>
       </main>
       <footer class="modal__footer">
-          <a href="/admin/users/{{user.dataValues.id}}/remove" class="modal__btn modal__btn-primary">yes</a>
-          <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">Close</button>
-        </footer>
+        <a href="/admin/users/{{user.dataValues.id}}/remove" class="modal__btn modal__btn-primary">yes</a>
+        <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">Close</button>
+      </footer>
     </div>
   </div>
 </div>

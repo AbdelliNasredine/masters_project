@@ -17,7 +17,7 @@
         <i class="fas fa-parking fa-3x"></i>
         <p>
           <strong>
-            {{parkingCount}}  
+            {{parkingCount}}
           </strong>
           parking zone(s)
         </p>
@@ -52,15 +52,15 @@
   // parsing
   const tmp = parking_geo_data.split(",");
   console.log(tmp);
-  
+
   let parsedData = [];
-  for(let i=0; i < tmp.length; i += 3) {
+  for (let i = 0; i < tmp.length; i += 3) {
     parsedData.push({ name: tmp[i + 2], geo: [tmp[i + 1], tmp[i]] })
   }
   console.log(parsedData);
 
   mapboxgl.accessToken = 'pk.eyJ1IjoibmFzLWVtYmFkIiwiYSI6ImNrNHZ3NWNsZzBhcGUza3JwYzgwMnI2bjcifQ.3-qlI_rVEJG7RyF7GF52Eg';
-  
+
   const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v11',
